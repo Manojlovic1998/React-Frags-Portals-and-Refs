@@ -25,6 +25,8 @@ const Modal = props => {
         </Card>);
 }
 
+// Refs are Uncontrolled components
+// States are Controlled components and are preferred way to handle states
 
 const ErrorModal = props => {
     return (
