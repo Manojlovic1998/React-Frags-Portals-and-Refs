@@ -1,24 +1,40 @@
 import {Fragment} from "react";
+import ReactDom from 'react-dom';
 import Card from "./Card";
 import Button from "./Button";
 
 import styles from "./ErrorModal.module.css";
 
+
+const BackgroundOverlay = props => {
+    return <div className={props.className} onClick={props.onErrorConfirmation}/>;
+};
+
+const Modal = props => {
+    return (
+        <Card className={styles.modal}>
+            <header className={styles.header}>
+                <h2>{props.title}</h2>
+            </header>
+            <div className={styles.content}>
+                <p>{props.message}</p>
+            </div>
+            <footer className={styles.actions}>
+                <Button onClick={props.onErrorConfirmation}>Okay</Button>
+            </footer>
+        </Card>);
+}
+
+
 const ErrorModal = props => {
     return (
         <Fragment>
-            <div className={styles.backdrop} onClick={props.onErrorConfirmation}/>
-            <Card className={styles.modal}>
-                <header className={styles.header}>
-                    <h2>{props.title}</h2>
-                </header>
-                <div className={styles.content}>
-                    <p>{props.message}</p>
-                </div>
-                <footer className={styles.actions}>
-                    <Button onClick={props.onErrorConfirmation}>Okay</Button>
-                </footer>
-            </Card>
+            {ReactDom.createPortal(<BackgroundOverlay className={styles.backdrop}
+                                                      onErrorConfirmation={props.onErrorConfirmation}/>,
+                document.getElementById('OverlayContainer'))}
+            {ReactDom.createPortal(<Modal title={props.title} message={props.message}
+                                          onErrorConfirmation={props.onErrorConfirmation}/>,
+                document.getElementById('ErrorModalContainer'))}
         </Fragment>);
 };
 
